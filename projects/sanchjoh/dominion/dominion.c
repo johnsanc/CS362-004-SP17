@@ -661,14 +661,14 @@ int playAdventurer(struct gameState *state) {
 	    cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]];
 	    //top card of hand is most recently drawn card.
 
-	    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold);
-	        //drawntreasure++;
+	    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	        drawntreasure++;
 
-	    else{
+	    else {
 	        temphand[z]=cardDrawn;
 	        state->handCount[currentPlayer]--;
 	        //this should just remove the top card (the most recently drawn one).
-	        z++;
+	        //z++;
 	    }
     }
 
@@ -1386,4 +1386,3 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 
 //end of dominion.c
-

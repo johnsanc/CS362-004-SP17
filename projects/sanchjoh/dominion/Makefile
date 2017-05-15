@@ -46,7 +46,20 @@ tests.out: unittest1.c unittest2.c dominion.c rngs.c
 	./unittest2 >> tests.out
 	gcov -b dominion.c >> tests.out
 
+randtests.out: randomtestadventurer.c randomtestcard1.c dominion.o rngs.o
+	echo "Results for running the randomized tests:" > randtests.out
+
+	echo "randomtestadventurer.c:" >> randtests.out
+	gcc -o randomtestadventurer -g randomtestadventurer.c dominion.c rngs.c $(CFLAGS)
+	./randomtestadventurer >> randtests.out
+
+	echo "randomtestcard1.c:" >> randtests.out
+	gcc -o randomtestcard1 -g randomtestcard1.c dominion.c rngs.c $(CFLAGS)
+	./randomtestcard1 >> randtests.out
+
+	gcov -b -f dominion.c >> randtests.out
+
 all: playdom player testDrawCard testBuyCard badTestDrawCard tests.out
 
 clean:
-	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so unittest1 unittest2 tests.out
+	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so unittest1 unittest2 tests.out randomtests.out randomtestadventurer randomtestcard1
