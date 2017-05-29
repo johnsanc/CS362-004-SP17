@@ -1,0 +1,88 @@
+Result for running randomtestcard2:
+randomtestcard2.c:
+----------------- Testing Card: remodel ----------------
+
+*** swap cards 22 to 14
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 14 ... Error
+supply count = 10, expected = 9... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 22, NOT = 22... Error
+
+*** swap cards 1 to 3
+return status = 0, expected = -1... Error
+hand count = 3, expected = 5... Error
+new card = 4, expected = 3 ... Error
+supply count = 8, expected = 7... Error
+discard count = 1, expected = 0... Error
+adventurer discarded: card = 4, NOT = 12... OK
+
+*** swap cards 11 to 11
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 11 ... Error
+supply count = 10, expected = 9... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 12, NOT = 12... Error
+
+*** swap cards 13 to 21
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 21 ... Error
+supply count = 10, expected = 9... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 12, NOT = 12... Error
+
+*** swap cards 7 to 1
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 1 ... Error
+supply count = 8, expected = 7... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 12, NOT = 12... Error
+
+*** swap cards 8 to 25
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 25 ... Error
+supply count = 10, expected = 9... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 12, NOT = 12... Error
+
+*** swap cards 21 to 1
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 1 ... Error
+supply count = 8, expected = 7... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 21, NOT = 21... Error
+
+*** swap cards 1 to 8
+return status = 0, expected = -1... Error
+hand count = 3, expected = 5... Error
+new card = 1, expected = 8 ... Error
+supply count = 10, expected = 9... Error
+discard count = 1, expected = 0... Error
+adventurer discarded: card = 4, NOT = 12... OK
+
+*** swap cards 19 to 4
+return status = -1, expected = 0... Error
+hand count = 5, expected = 3... Error
+new card = 0, expected = 4 ... Error
+supply count = 46, expected = 45... Error
+discard count = 0, expected = 1... Error
+adventurer discarded: card = 12, NOT = 12... Error
+
+*** swap cards 0 to 8
+return status = 0, expected = -1... Error
+hand count = 3, expected = 5... Error
+new card = 2, expected = 8 ... Error
+supply count = 10, expected = 9... Error
+discard count = 1, expected = 0... Error
+adventurer discarded: card = 1, NOT = 12... OK
+Failed 57 tests
+File 'randomtestcard2.c'
+Lines executed:98.48% of 66
+Creating 'randomtestcard2.c.gcov'
+

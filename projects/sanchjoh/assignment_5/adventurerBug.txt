@@ -1,0 +1,58 @@
+Noverse Bug Reporting Template
+==============================
+
+Title:  Adventurer
+
+Class:  Serious Bug
+
+Date:   5/27/2017
+Reported By:  Johnny Sanchez
+Email:  sanchjoh@oregonstate.edu
+
+
+Product: Dominion               Version:  N/A
+Platform:  Linux                Version:  Ubuntu 16.04
+Browser: N/A                    Version:  N/A
+URL:  N/A
+
+Is it reproducible: Yes
+
+Description
+===========
+The adventurer card will not correctly update the treasure counter, since it is missing a
+reference to the gold treasure card.  The adventurer card should correctly be able to
+increment the counter of treasures drawn or else the player will draw too many cards.
+
+
+Steps to Produce/Reproduce
+--------------------------
+struct gameState G;
+G.numPlayers = 2;
+G.deck[0][2] = {copper, gold}
+/* randomize game state */
+play_adventurer(&G);
+
+Expected Results
+----------------
+drawnTreasure = 2
+
+
+Actual Results
+--------------
+drawnTreasure = 1
+
+
+Workarounds
+-----------
+None
+
+
+Attachments
+-----------
+randomtestadventurer.out
+
+
+Other Information
+-----------------
+None
+

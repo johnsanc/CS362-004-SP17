@@ -1,0 +1,62 @@
+Noverse Bug Reporting Template
+==============================
+
+Title:  Smithy
+
+Class:  Serious Bug
+e.g. "Feature Request", "System Error", "Serious Bug"
+
+Date:   5/27/2017
+Reported By:  Johnny Sanchez
+Email:  sanchjoh@oregonstate.edu
+
+
+Product: Dominion               Version:  N/A
+Platform:  Linux                Version:  Ubuntu 16.04
+Browser: N/A                    Version:  N/A
+URL:  N/A
+
+Is it reproducible: Yes
+
+Description
+===========
+The bug in question affects the amount of cards drawn by the player when this card is played.
+This is the core functionality of the card; a player is able to draw three cards from the
+player's deck, whereas this version only allows the player to draw 2 cards instead.
+
+
+Steps to Produce/Reproduce
+--------------------------
+struct gameState G;
+G.numPlayers = 2;
+G.deck[0][3] = {copper,gold,adventurer};
+G.handCount[0] = 0;
+/* randomize game state */
+play_adventurer(&G);
+
+
+
+Expected Results
+----------------
+G.handCount[0] = 3;
+
+
+Actual Results
+--------------
+G.handCount[0] = 2;
+
+
+Workarounds
+-----------
+None
+
+
+Attachments
+-----------
+randomtestcard1.out
+
+
+Other Information
+-----------------
+None
+

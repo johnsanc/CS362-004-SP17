@@ -684,7 +684,7 @@ int playAdventurer(struct gameState *state) {
     int i;
     int currentPlayer = whoseTurn(state);
     //+3 Cards
-      for (i = 0; i < 2; i++)
+      for (i = 0; i < 3; i++) /* FIXED */
 	{
 	  drawCard(currentPlayer, state);
 	}

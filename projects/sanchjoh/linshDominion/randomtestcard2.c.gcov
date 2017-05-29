@@ -1,0 +1,141 @@
+        -:    0:Source:randomtestcard2.c
+        -:    0:Graph:randomtestcard2.gcno
+        -:    0:Data:randomtestcard2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * cardtest2.c
+        -:    3: */
+        -:    4:
+        -:    5:
+        -:    6:#include "dominion.h"
+        -:    7:#include "dominion_helpers.h"
+        -:    8:#include <string.h>
+        -:    9:#include <stdio.h>
+        -:   10:#include <assert.h>
+        -:   11:#include "rngs.h"
+        -:   12:#include <stdlib.h>
+        -:   13:#include<time.h>
+        -:   14:
+        -:   15:#define REPS 10
+        -:   16:
+        -:   17:#define TESTCARD "remodel"
+        -:   18:
+        1:   19:int main() {
+        1:   20:    srand(time(NULL));
+        1:   21:    int newCards = 0;
+        1:   22:    int played = 0;
+        1:   23:    int xtraCoins = 0;
+        1:   24:    int shuffledCards = 0;
+        -:   25:
+        -:   26:    int i, j, m;
+        1:   27:    int handpos = 0, choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0;
+        -:   28:    int remove1, remove2;
+        -:   29:    int trashed, trashpos;
+        1:   30:    int seed = 1000;
+        1:   31:    int numPlayers = 2;
+        1:   32:    int thisPlayer = 0;
+        -:   33:    struct gameState G, testG;
+        1:   34:    int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        -:   35:        sea_hag, tribute, smithy, council_room};
+        -:   36:
+        1:   37:    int error_count = 0;
+       60:   38:    void perror(int bval){
+       60:   39:        if (bval) {
+        3:   40:            printf("... OK\n");
+        -:   41:        }else{
+       57:   42:            printf("... Error\n");
+       57:   43:            error_count++;
+        -:   44:        }
+       60:   45:    }
+       50:   46:    int randomRange(int min, int max){
+       50:   47:        int r = (rand() % (max + 1 - min)) + min;
+       50:   48:        return r;
+        -:   49:    }
+        -:   50:    int rv, ev;
+        -:   51:
+        -:   52:	// initialize a game state and player cards
+        1:   53:	initializeGame(numPlayers, k, seed, &G);
+        -:   54:
+        1:   55:	printf("----------------- Testing Card: %s ----------------\n", TESTCARD);
+        -:   56:
+        -:   57:    /***************************************************
+        -:   58:     * trade a card from the hand and from the supply
+        -:   59:     ***************************************************/
+        -:   60:    //for ( j = 0; j < 10; j++){
+       11:   61:    for ( j = 0; j < REPS; j++){
+        -:   62:        /* set hand  and deck*/
+       10:   63:        handpos = 0;
+       10:   64:        G.hand[thisPlayer][handpos] = remodel;
+       10:   65:        trashpos = randomRange(0, testG.handCount[thisPlayer]);
+        -:   66:        do {
+       15:   67:            choice1 = randomRange(0,treasure_map);
+       15:   68:        } while (G.supplyCount[choice1] < 1);
+       10:   69:        G.hand[thisPlayer][trashpos] = choice1;
+        -:   70:
+        -:   71:        do {
+       25:   72:            choice2 = randomRange(0,treasure_map);
+       25:   73:        } while (G.supplyCount[choice2] < 1);
+        -:   74:
+       10:   75:        if (getCost(choice2) <= getCost(choice1)+2){
+        7:   76:            ev = 0;
+        7:   77:            newCards = 1;
+        7:   78:            played = 1;
+        7:   79:            trashed = 1;
+        -:   80:        } else {
+        3:   81:            ev = -1;
+        3:   82:            newCards = 0;
+        3:   83:            played = 0;
+        3:   84:            trashed = 0;
+        -:   85:        }
+        -:   86:
+       10:   87:	    printf("\n*** swap cards %d to %d\n", choice1, choice2);
+        -:   88:
+        -:   89:        // copy the game state to a test case
+       10:   90:        memcpy(&testG, &G, sizeof(struct gameState));
+       10:   91:        rv = cardEffect(remodel, trashpos, choice2, choice3, &testG, handpos, &bonus);
+        -:   92:
+       10:   93:        printf("return status = %d, expected = %d", rv, ev);
+       10:   94:        perror(rv == ev);
+        -:   95:
+       10:   96:        printf("hand count = %d, expected = %d", 
+        -:   97:                testG.handCount[thisPlayer], 
+       10:   98:                G.handCount[thisPlayer] - played - trashed);
+       20:   99:        perror(testG.handCount[thisPlayer] 
+       10:  100:                == G.handCount[thisPlayer] - played - trashed);
+        -:  101:
+        -:  102:        /*If you do gain a card, it comes from the Supply and 
+        -:  103:         * is put into your discard pile.*/
+        -:  104:
+        -:  105:        //int card1 = testG.hand[thisPlayer][handpos];
+       10:  106:        int card1 = testG.discard[thisPlayer][testG.discardCount[thisPlayer] -1];
+       10:  107:        printf("new card = %d, expected = %d ", card1, choice2);
+       10:  108:        perror(card1 == choice2);
+        -:  109:
+       10:  110:        printf("supply count = %d, expected = %d", 
+        -:  111:                testG.supplyCount[choice2],
+       10:  112:                G.supplyCount[choice2]-1);
+       10:  113:        perror(testG.supplyCount[choice2] == G.supplyCount[choice2]-1);
+        -:  114:
+       10:  115:        printf("discard count = %d, expected = %d", 
+        -:  116:                testG.discardCount[thisPlayer], 
+       10:  117:                G.discardCount[thisPlayer] + newCards);
+       20:  118:        perror(testG.discardCount[thisPlayer] 
+       10:  119:                == G.discardCount[thisPlayer] + newCards);
+        -:  120:
+       10:  121:        printf("adventurer discarded: card = %d, NOT = %d",
+        -:  122:                testG.hand[thisPlayer][handpos],
+        -:  123:                G.hand[thisPlayer][handpos]);
+       10:  124:        perror( testG.hand[thisPlayer][handpos] != G.hand[thisPlayer][handpos]);
+        -:  125:    }
+        -:  126:
+        -:  127:
+        -:  128:    /* tally error count */
+        1:  129:    if (error_count == 0)                                                      
+    #####:  130:        printf("All tests passed!\n");                                         
+        -:  131:    else                                                                       
+        1:  132:        printf("Failed %d tests\n", error_count);
+        1:  133:    return 0;
+        -:  134:}
+        -:  135:
+        -:  136:

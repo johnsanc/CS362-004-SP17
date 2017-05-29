@@ -12,7 +12,7 @@ int checkSmithy(struct gameState *state, int p) {
 
   int result;
 
-  result = playSmithy(state, 0);
+  result = play_smithy(state, 0);
 
 
   if (correct.deckCount[p] > 0) {

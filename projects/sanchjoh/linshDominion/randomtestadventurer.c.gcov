@@ -1,0 +1,99 @@
+        -:    0:Source:randomtestadventurer.c
+        -:    0:Graph:randomtestadventurer.gcno
+        -:    0:Data:randomtestadventurer.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include <math.h>
+        -:    7:#include "rngs.h"
+        -:    8:#include <stdlib.h>
+        -:    9:#include <time.h>
+        -:   10:
+        -:   11:
+        -:   12:
+        1:   13:int main() {
+        -:   14:
+        -:   15:  int p, n, i, result;
+        -:   16:  struct gameState G;
+        -:   17:  int drawCorrect, drawIncorrect, test1, test2, discardBefore,
+        -:   18:      discardAfter, deckBefore, deckAfter, handBefore, handAfter, totalBefore,
+        -:   19:      totalAfter, checkCard;
+        -:   20:
+        1:   21:  int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   22:	       remodel, smithy, village, baron, great_hall};
+        -:   23:
+        -:   24:  // printf("Testing playAdventurer.\n");
+        -:   25:  //
+        -:   26:  // printf("Testing if correct card is drawn.\n");
+        -:   27:
+        -:   28:  // Initiate ramdomizer
+        1:   29:  SelectStream(2);
+        1:   30:  PutSeed(3);
+        -:   31:
+    10001:   32:  for (n = 0; n < 10000; n++) {
+        -:   33:
+        -:   34:    // Fill game post with random stuff.
+263010000:   35:    for (i = 0; i < sizeof(struct gameState); i++) {
+263000000:   36:      ((char*)&G)[i] = floor(Random() * 256);
+        -:   37:    }
+        -:   38:
+        -:   39:    // Fill game post with credible/in-range values
+        -:   40:    // Since the Adventurer card relies on the ability to draw cards, we need
+        -:   41:    // These values to stay within the allowabled ranges to accurately test.
+    10000:   42:    p = floor(Random() * 2);
+    10000:   43:    initializeGame(2, k, 1, &G);
+    10000:   44:    G.deckCount[p] = floor(Random() * MAX_DECK);
+    10000:   45:    G.discardCount[p] = floor(Random() * MAX_DECK);
+    10000:   46:    G.handCount[p] = floor(Random() * MAX_HAND);
+        -:   47:
+        -:   48:    //result = checkAdventurerCard(p, &G);
+        -:   49:    // Need to keep track of the amount in discard pile, deck size, hand size to
+        -:   50:    // make sure amount are correct.  Hand will need to have +2 before function is
+        -:   51:    // called because other cards are destroyed and 1 treasure cards are kept in
+        -:   52:    // hand.
+    10000:   53:    handBefore = G.handCount[p];
+    10000:   54:    deckBefore = G.deckCount[p];
+    10000:   55:    discardBefore = G.discardCount[p];
+        -:   56:
+        -:   57:    // Run the function
+    10000:   58:    checkCard = play_adventurer(&G);
+    10000:   59:    drawCorrect = G.hand[p][G.handCount[p] - 1];
+    10000:   60:    drawIncorrect = G.hand[p][G.handCount[p]];
+        -:   61:
+    10000:   62:    assert (checkCard == 0);
+        -:   63:    // Get Results
+    10000:   64:    handAfter = G.handCount[p];
+    10000:   65:    deckAfter = G.deckCount[p];
+    10000:   66:    discardAfter = G.discardCount[p];
+        -:   67:
+        -:   68:    // Run the totals
+    10000:   69:    totalBefore = handBefore + deckBefore + discardBefore;
+    10000:   70:    totalAfter = handAfter + deckAfter + discardAfter;
+        -:   71:
+        -:   72:    // Testing if correct card was selected for cardDrawn
+    10000:   73:    if (drawIncorrect != drawCorrect) {
+    10000:   74:        test1 = 0;
+    #####:   75:    } else test1 = 1;
+        -:   76:
+        -:   77:    // Testing if the totals for the cards in use had changed.
+    10000:   78:    if (totalBefore == totalAfter) {
+    10000:   79:        test2 = 1;
+    #####:   80:    } else test2 = 0;
+        -:   81:
+    10000:   82:    if (result == 1) {
+    #####:   83:        printf("ALL TESTS PASSED\n");
+    10000:   84:    } else if (result == -1) {
+    #####:   85:        printf("1 TEST PASSED OUT OF 2\n");
+        -:   86:    } else {
+    10000:   87:        printf("ALL TESTS FAILED\n");
+        -:   88:    }
+        -:   89:
+        -:   90:  }
+        -:   91:
+        -:   92:
+        1:   93:  return 0;
+        -:   94:}
